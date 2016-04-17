@@ -79,3 +79,13 @@ $RECYCLE.BIN/
 *.lnk
 *.sdf
 Project/BoardGameProject.v12.suo
+*.opensdf
+# Execution folders
+*.pdb
+*.ilk
+
+# Ignore Compilation folders
+Project/Obj/x86-Debug
+Project/Obj/x86-Release
+Project/Obj/x64-Debug
+Project/Obj/x64-Release
