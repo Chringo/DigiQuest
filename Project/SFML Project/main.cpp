@@ -16,20 +16,8 @@ int main()
 		{
 			switch (e.type)
 			{
-			case sf::Event::MouseWheelScrolled:
-
-				break;
-			case sf::Event::MouseButtonPressed:
-
-				break;
-			case sf::Event::MouseButtonReleased:
-
-				break;
 			case sf::Event::KeyPressed:
-				//  0 = A
-				// 18 = S
-				//  3 = D
-				if (e.key.code != 36)// 36 = ESC
+				if (e.key.code != sf::Keyboard::Escape)// 36 = ESC
 				{
 					std::printf("%d", e.key.code);
 				}
@@ -44,7 +32,6 @@ int main()
 		window.clear();
 		window.draw(game);
 		window.display();
-
 	}
 
 	return 0;

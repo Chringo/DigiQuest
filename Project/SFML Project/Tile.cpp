@@ -62,7 +62,5 @@ bool Tile::isPassable() const
 
 void Tile::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-	//states.texture = &mTexture;
 	target.draw(mSpriteSheet, states);
-	//target.draw(shape, states);
 }

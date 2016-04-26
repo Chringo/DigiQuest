@@ -9,19 +9,26 @@ Game::Game()
 	mBackgroundSprite.setTexture(mBackgroundTex);
 	
 	board = new Board();
-	//player = new Player(1);
+	player = new Player(board->getPlayerPos());
 }
 Game::~Game()
 {
 	delete board;
-	//delete player;
+	delete player;
 }
 
 void Game::Update(float dt)
 {
-	// Make sure everything in the game is updated (if needed).
+	int key;
+	bool is_A = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
+	if (is_A && !was_A && !playerWalking)
+	{
+		
+	}
+
+
 	board->Update(dt);
-	//player->Update(dt);
+	player->Update(dt, board->getPlayerPos());
 }
 
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -29,5 +36,5 @@ void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	// Make sure everything in the game is drawn.
 	target.draw(mBackgroundSprite, states);
 	target.draw(*board, states);
-	//target.draw(*player, states);
+	target.draw(*player, states);
 }

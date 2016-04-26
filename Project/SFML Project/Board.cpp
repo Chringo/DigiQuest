@@ -32,10 +32,12 @@ Board::Board()
 				if (y == 0)
 					tiles[x][y] = nullptr;
 				else
-					tiles[x][y] = new Tile(Tile::Forest, 3, sf::Vector2f((strt + 106.f * x), (30.f + 121.f * y)));
+					tiles[x][y] = new Tile(Tile::Plain, 3, sf::Vector2f((strt + 106.f * x), (30.f + 121.f * y)));
 			}
 		}
 	}
+	// Set Player Start Position - Will be a choice later on
+	setPlayerPos(tiles[1][0]->getPos());
 }
 Board::~Board()
 {
@@ -50,6 +52,14 @@ Board::~Board()
 	delete tiles;
 }
 
+void Board::setPlayerPos(sf::Vector2f pos)
+{
+	playerPos = pos;
+}
+sf::Vector2f Board::getPlayerPos() const
+{
+	return playerPos;
+}
 void Board::Update(float dt)
 {
 	//error LNK2005: "public: virtual void * __thiscall Tile::`vector deleting destructor'(unsigned int)" (??_ETile@@UAEPAXI@Z) already defined in Tile.obj	*\Board.obj
