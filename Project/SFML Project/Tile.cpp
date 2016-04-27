@@ -53,7 +53,7 @@ void Tile::setMoveCost(int _cost)
 }
 int Tile::getMoveCost() const
 {
-	return land;
+	return cost;
 }
 bool Tile::isPassable() const
 {
