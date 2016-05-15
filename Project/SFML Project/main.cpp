@@ -10,7 +10,7 @@ int main()
 
 	while (window.isOpen())
 	{
-		// Check all the window's events that were triggered since the last iteration of the loop
+		// Events triggered since last iteration
 		sf::Event e;
 		while (window.pollEvent(e))
 		{
@@ -28,7 +28,7 @@ int main()
 			}
 		}
 		
-		game.Update(gameTime.restart().asSeconds());
+		game.Update(&e, gameTime.restart().asSeconds());
 		window.clear();
 		window.draw(game);
 		window.display();

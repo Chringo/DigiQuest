@@ -1,20 +1,24 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-#include <SFML\Graphics.hpp>
+#include "Unit.hpp"
 
-class Player : public sf::Drawable
+class Player : public Unit
 {
 public:
 	Player(sf::Vector2f startPos);
 	virtual ~Player();
 
-	void Update(float dt, sf::Vector2f target);
+	void Update(float dt);
+	void Update(float dt, sf::Vector2f* target);
 
+	void addLoot(int loot);
 private:
 	sf::Texture mTexture;
 	sf::Sprite mSpriteSheet;
 	float mSpeed = 120.f;
+	sf::Texture mAvatarTex;
+	sf::Sprite mAvatarSprite;
 
 	// Animation variables
 	sf::Vector2i mCurrentKeyFrame;
@@ -25,13 +29,8 @@ private:
 	// Walking variables
 	bool wasWalking;
 	bool isWalking;
-
-	// Jump variables
-	bool mWasSpacePressed = false;
-	bool mIsJumping = false;
-	float mStartY = 0.0f;
+	sf::Vector2f goal;
 	sf::Vector2f dir;
-	float mGravity = 9.82f;
 	
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };

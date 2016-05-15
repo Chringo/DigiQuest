@@ -2,76 +2,107 @@
 
 Board::Board()
 {
-	float strt = 900;
-	boardWidth = 3;
-	boardHeight = 5;
+	float strt = 680;
+	width = 5;	// Number of columns
+	height = 5;	// Number of rows
 
 	// Initiate Tiles
-	tiles = new Tile**[boardWidth];
-	for (int i = 0; i < boardWidth; i++)
+	tiles = new Tile**[width];
+	for (int i = 0; i < width; i++)
 	{
-		tiles[i] = new Tile*[boardHeight];
+		tiles[i] = new Tile*[height];
 	}
+	// Initiate array for adjoined tile positions
+	adjoined = new sf::Vector2f[3];
 
 	// Set Tiles and hexagon pattern
-	for (int x = 0; x < boardWidth; x++)
+	for (int x = 0; x < width; x++)
 	{
-		for (int y = 0; y < boardHeight; y++)
+		for (int y = 0; y < height; y++)
 		{
-			if (x & 1)
+			if (x & 1) // Odd column
 			{
 				if (y == 0)
-					tiles[x][y] = new Tile(Tile::Start, 3, sf::Vector2f((strt + 106.f * x), (90.f + 121.f * y)));
-				else if (y == (boardHeight - 1))
-					tiles[x][y] = new Tile(Tile::Goal, 3, sf::Vector2f((strt + 106.f * x), (90.f + 121.f * y)));
+					tiles[x][y] = new Tile( x, y, Tile::Start, 1, sf::Vector2f((strt + 106.f * x), (90.f + 121.f * y)));
+				else if (y == (height - 1))
+					tiles[x][y] = new Tile( x, y, Tile::Goal, 1, sf::Vector2f((strt + 106.f * x), (90.f + 121.f * y)));
 				else
-					tiles[x][y] = new Tile(Tile::Plain, 3, sf::Vector2f((strt + 106.f * x), (90.f + 121.f * y)));
+					tiles[x][y] = new Tile( x, y, Tile::Plain, 1, sf::Vector2f((strt + 106.f * x), (90.f + 121.f * y)));
 			}
-			else
+			else // Even column
 			{
 				if (y == 0)
 					tiles[x][y] = nullptr;
 				else
-					tiles[x][y] = new Tile(Tile::Plain, 3, sf::Vector2f((strt + 106.f * x), (30.f + 121.f * y)));
+					tiles[x][y] = new Tile( x, y, Tile::Plain, 1, sf::Vector2f((strt + 106.f * x), (30.f + 121.f * y)));
 			}
 		}
 	}
 	// Set Player Start Position - Will be a choice later on
-	setPlayerPos(tiles[1][0]->getPos());
+	active = tiles[1][0];
+
+	this->printTileCost();
 }
 Board::~Board()
 {
-	for (int x = 0; x < boardWidth; x++)
+	for (int x = 0; x < width; x++)
 	{
-		for (int y = 0; y < boardHeight; y++)
+		for (int y = 0; y < height; y++)
 		{
 			delete tiles[x][y];
 		}
 		delete[] tiles[x];
 	}
 	delete tiles;
+
+	delete[] adjoined;
 }
 
-void Board::setPlayerPos(sf::Vector2f pos)
+bool Board::setActiveTile(int x, int y)
 {
-	playerPos = pos;
+	if (x < 0 || x >= width)
+	{
+		return false;
+	}
+	else if (y >= height)
+	{
+		return false;
+	}
+	else
+	{
+		active = tiles[x][y];
+	}
 }
-sf::Vector2f Board::getPlayerPos() const
+sf::Vector2f Board::getActiveTilePos() const
 {
-	return playerPos;
+	return active->getPos();
+}
+sf::Vector2f* Board::getAdjoinedTiles()
+{
+	int activeCol = active->getCol();
+	int activeRow = active->getRow();
+	if (active->getCol() & 1)
+	{
+		adjoined[0] = tiles[activeCol - 1][activeRow + 1]->getPos();
+		adjoined[1] = tiles[activeCol + 0][activeRow + 1]->getPos();
+		adjoined[2] = tiles[activeCol + 1][activeRow + 1]->getPos();
+	}
+	//printf("%.f, %.f \n", adjoined[0].x, adjoined[0].y);
+	//printf("%.f, %.f \n", adjoined[1].x, adjoined[1].y);
+	//printf("%.f, %.f \n", adjoined[2].x, adjoined[2].y);
+	return adjoined;
 }
 void Board::Update(float dt)
 {
-	//error LNK2005: "public: virtual void * __thiscall Tile::`vector deleting destructor'(unsigned int)" (??_ETile@@UAEPAXI@Z) already defined in Tile.obj	*\Board.obj
+	
 }
 
 void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-	//target.draw(mSpriteSheet, states);
-
-	for (int x = 0; x < boardWidth; x++)
+	// Draw board of tiles
+	for (int x = 0; x < width; x++)
 	{
-		for (int y = 0; y < boardHeight; y++)
+		for (int y = 0; y < height; y++)
 		{
 			if (tiles[x][y] != nullptr)
 				target.draw(*tiles[x][y], states);
@@ -79,10 +110,17 @@ void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	}
 }
 
-void Board::print()
+void Board::printTileCost()
 {
-	for (int i = 0; i < boardHeight; i++)
+	for (int x = 0; x < width; x++)
 	{
-		//printf("%d ", tiles[i].getMoveCost());
+		for (int y = 0; y < height; y++)
+		{
+			if (tiles[x][y] != nullptr)
+				printf("%d ", tiles[x][y]->getMoveCost());
+			else
+				printf("  ");
+		}
+		printf("\n");
 	}
 }

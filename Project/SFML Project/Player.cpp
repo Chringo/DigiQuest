@@ -2,8 +2,13 @@
 
 Player::Player(sf::Vector2f startPos)
 {
-	sf::String fileName = "../Resources/player2.png";
-	// Load texture, set it to the sprite and set what part of the sprite sheet to draw.
+	health = 200;
+	recovery = 12;
+	stamina = 120;
+	energy = 20;
+
+	// Board piece
+	sf::String fileName = "../Resources/pi_player.png";
 	if (!mTexture.loadFromFile(fileName))
 	{
 		// Handle error
@@ -12,6 +17,29 @@ Player::Player(sf::Vector2f startPos)
 	mSpriteSheet.setPosition(startPos.x + 54, startPos.y + 44);
 	mSpriteSheet.setTextureRect(sf::IntRect(0, 0, 32, 32));
 
+	// COMBAT VIEW - Background
+	mBackgroundSprite.setPosition(330, 320);
+	// Avatar
+	fileName = "../Resources/av_player.png";
+	if (!mAvatarTex.loadFromFile(fileName))
+	{
+		// Handle error
+	}
+	mAvatarSprite.setTexture(mAvatarTex);
+	mAvatarSprite.setPosition(330, 320);
+	// Stats
+	mStats = new sf::RectangleShape[4];
+	mStats[0] = sf::RectangleShape(sf::Vector2f((float)(1 * health), 32));
+	mStats[1] = sf::RectangleShape(sf::Vector2f((float)(2 * recovery), 32));	// Super idiotic - TODO
+	mStats[2] = sf::RectangleShape(sf::Vector2f((float)(1 * stamina), 32));
+	mStats[3] = sf::RectangleShape(sf::Vector2f((float)(2 * energy), 32));		// Super idiotic - TODO
+	mStats[0].setFillColor(sf::Color(100, 0, 0));
+	mStats[1].setFillColor(sf::Color(200, 90, 90));
+	mStats[2].setFillColor(sf::Color(0, 100, 0));
+	mStats[3].setFillColor(sf::Color(90, 200, 90));
+	for (int i = 0; i < 4; i++)
+		mStats[i].setPosition(426, (float)(322 + 34 * i));
+
 	// Initialise animation variables.
 	mCurrentKeyFrame = sf::Vector2i(0, 0);
 	mKeyFrameSize = sf::Vector2i(32, 32);
@@ -19,73 +47,62 @@ Player::Player(sf::Vector2f startPos)
 	mAnimationSpeed = 0.2f;
 	mKeyFrameDuration = 0.0f;
 	// Initiate walking variables
+	goal = mSpriteSheet.getPosition();
 	wasWalking = false;
 	isWalking = false;
 }
 Player::~Player()
 {
-
+	delete[] mStats;
 }
 
-void Player::Update(float dt, sf::Vector2f target)
+void Player::Update(float dt)
 {
-	sf::Vector2f direction(0.0f, 0.0f);
 
-	// Handle input from arrow keys and update direction and animation
-	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+}
+void Player::Update(float dt, sf::Vector2f* target)
+{
+	// Check to start walking
+	//if (is_S && !wasWalking && !isWalking)
 	//{
-	//	direction.x = -1.f;
-	//	mKeyFrameDuration += dt;
-	//	mCurrentKeyFrame.y = 1;
+	//	isWalking = true;
+	//	goal = sf::Vector2f(target[1].x + 54, target[1].y + 44);
+	//	dir = sf::Vector2f(0.f, 1.f);
 	//}
-	//else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	//else if (is_A && !wasWalking && !isWalking)
 	//{
-	//	direction.x = 1.0f;
-	//	mKeyFrameDuration += dt;
-	//	mCurrentKeyFrame.y = 2;
+	//	isWalking = true;
+	//	goal = sf::Vector2f(target[0].x + 54, target[0].y + 44);
+	//	dir = sf::Vector2f(-1.6f, 0.9f);
 	//}
-	//else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	//else if (is_D && !wasWalking && !isWalking)
 	//{
-	//	direction.y = 1.0f;
-	//	mKeyFrameDuration += dt;
-	//	mCurrentKeyFrame.y = 0;
+	//	isWalking = true;
+	//	goal = sf::Vector2f(target[2].x + 54, target[2].y + 44);
+	//	dir = sf::Vector2f(+1.6f, 0.9f);
 	//}
-
-	//if ((mSpriteSheet.getPosition().x + 54) - target.x < 0.001f &&
-	//	target.x - (mSpriteSheet.getPosition().x + 54) > 0.001f)
-
-	// Check to start jumping
-	bool is_S = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
-	bool is_A = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
-	if (is_S && !mWasSpacePressed && !mIsJumping)
+	if (mSpriteSheet.getPosition().y < target[1].y)
 	{
-		mIsJumping = true;
-		mStartY = mSpriteSheet.getPosition().y;
+		isWalking = true;
+		goal = sf::Vector2f(target[1].x + 54, target[1].y + 44);
 		dir = sf::Vector2f(0.f, 1.f);
 	}
-	else if (is_A && !mWasSpacePressed && !mIsJumping)
-	{
-		mIsJumping = true;
-		mStartY = mSpriteSheet.getPosition().y;
-		dir = sf::Vector2f(-1.1f, 0.9f);
-	}
 
-	// Update jump
-	if (mIsJumping)
+	// Update walk
+	if (isWalking)
 	{
-		direction = dir;
 		mKeyFrameDuration += dt;
 		mCurrentKeyFrame.y = 0;
 
-		// Check players walking, clean up
-		if (mSpriteSheet.getPosition().y > (mStartY + 120.f))
+		// Reset
+		if (mSpriteSheet.getPosition().y > goal.y && ((mSpriteSheet.getPosition().x < (goal.x + 0.001f)) || (mSpriteSheet.getPosition().x >(goal.x + 0.001f))))
 		{
-			mIsJumping = false;
-			dir = sf::Vector2f(0.f, 0.f);
+			isWalking = false;
+			dir = sf::Vector2f();
 		}
 	}
 
-	mSpriteSheet.move(direction * mSpeed * dt);
+	mSpriteSheet.move(dir * mSpeed * dt);
 
 	// Update animation
 	if (mKeyFrameDuration >= mAnimationSpeed)
@@ -99,10 +116,21 @@ void Player::Update(float dt, sf::Vector2f target)
 			mCurrentKeyFrame.y * mKeyFrameSize.y, mKeyFrameSize.x, mKeyFrameSize.y));
 		mKeyFrameDuration = 0.0f;
 	}
+	wasWalking = isWalking;
+}
 
+void Player::addLoot(int loot)
+{
+	this->loot += loot;
 }
 
 void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
+
+	target.draw(mBackgroundSprite, states);
+	target.draw(mAvatarSprite, states);
+	for (int i = 0; i < 4; i++)
+		target.draw(mStats[i], states);
+
 	target.draw(mSpriteSheet, states);
 }

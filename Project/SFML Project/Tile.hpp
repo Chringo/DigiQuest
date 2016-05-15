@@ -17,21 +17,25 @@ public:
 	};
 
 	Tile();
-	Tile(eType land, int cost, sf::Vector2f pos);
+	Tile(int column, int row, eType land, int cost, sf::Vector2f position);
 	virtual ~Tile();
 
-	//void setPos(sf::Vector2f pos);
-	sf::Vector2f getPos() const;
+	int getCol() const;
+	int getRow() const;
 	void setMoveCost(int cost);
 	int getMoveCost() const;
 	bool isPassable() const;
 
+	sf::Vector2f getPos() const;
 	//void Update(float dt);
 private:
+	short int col;
+	short int row;
 	eType land;
-	sf::Vector2f pos;
 	short int cost;
 	bool passable;
+
+	sf::Vector2f pos; // Graphical purpose
 	
 	sf::Texture mTexture;
 	sf::Sprite mSpriteSheet;

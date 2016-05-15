@@ -2,13 +2,18 @@
 
 Tile::Tile()
 {
+	col = -1;
+	row = -1;
 	land = Plain;
 	cost = -1;
-	pos = sf::Vector2f();
 	passable = false;
+
+	pos = sf::Vector2f();
 }
-Tile::Tile(eType _land, int _cost, sf::Vector2f _pos)
+Tile::Tile(int _col, int _row, eType _land, int _cost, sf::Vector2f _pos)
 {
+	col = _col;
+	row = _row;
 	land = _land;
 	cost = _cost;
 	pos = _pos;
@@ -43,9 +48,13 @@ Tile::Tile(eType _land, int _cost, sf::Vector2f _pos)
 }
 Tile::~Tile(){}
 
-sf::Vector2f Tile::getPos() const
+int Tile::getCol() const
 {
-	return pos;
+	return col;
+}
+int Tile::getRow() const
+{
+	return row;
 }
 void Tile::setMoveCost(int _cost)
 {
@@ -58,6 +67,11 @@ int Tile::getMoveCost() const
 bool Tile::isPassable() const
 {
 	return passable;
+}
+
+sf::Vector2f Tile::getPos() const
+{
+	return pos;
 }
 
 void Tile::draw(sf::RenderTarget &target, sf::RenderStates states) const

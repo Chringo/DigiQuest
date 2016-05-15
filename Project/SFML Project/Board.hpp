@@ -11,21 +11,19 @@ public:
 	Board();
 	virtual ~Board();
 
-	sf::Vector2f getPlayerPos() const;
+	bool setActiveTile(int x, int y);
+	sf::Vector2f getActiveTilePos() const;
+	sf::Vector2f* getAdjoinedTiles();
 	void Update(float dt);
 
-	void print();
+	void printTileCost();
 private:
 	Tile*** tiles;
-	int boardWidth;
-	int boardHeight;
-	sf::Vector2f playerPos;
+	int width;
+	int height;
+	Tile* active;
+	sf::Vector2f* adjoined;
 
-
-
-	//sf::Texture mTexture;
-	//sf::Sprite mSpriteSheet;
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const;
-	void setPlayerPos(sf::Vector2f pos);
 };
 #endif
