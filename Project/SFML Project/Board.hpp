@@ -18,11 +18,16 @@ public:
 
 	void printTileCost();
 private:
-	Tile*** tiles;
-	int width;
-	int height;
+	static const int WIDTH = 5;		// Number of columns
+	static const int HEIGHT = 5;	// Number of rows
+	Tile* tiles[WIDTH][HEIGHT];
 	Tile* active;
 	sf::Vector2f* adjoined;
+
+	// Hold one of each tile type
+	Tile startTile;
+	Tile goalTile;
+	Tile plainTile;
 
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };

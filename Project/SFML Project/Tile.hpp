@@ -6,7 +6,7 @@
 class Tile : public sf::Drawable
 {
 public:
-	enum eType : unsigned int
+	static enum eType : unsigned int
 	{
 		Plain = 0,
 		Hill,
@@ -17,20 +17,19 @@ public:
 	};
 
 	Tile();
-	Tile(int column, int row, eType land, int cost, sf::Vector2f position);
+	Tile(eType land, sf::Vector2f position);
 	virtual ~Tile();
 
-	int getCol() const;
-	int getRow() const;
-	void setMoveCost(int cost);
+	//int getCol() const;
+	//int getRow() const;
 	int getMoveCost() const;
 	bool isPassable() const;
 
 	sf::Vector2f getPos() const;
-	//void Update(float dt);
+	//void Update(float dt); // For animation
 private:
-	short int col;
-	short int row;
+	//short int col;
+	//short int row;
 	eType land;
 	short int cost;
 	bool passable;

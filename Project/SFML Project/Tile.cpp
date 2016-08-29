@@ -2,20 +2,16 @@
 
 Tile::Tile()
 {
-	col = -1;
-	row = -1;
 	land = Plain;
 	cost = -1;
 	passable = false;
 
 	pos = sf::Vector2f();
 }
-Tile::Tile(int _col, int _row, eType _land, int _cost, sf::Vector2f _pos)
+Tile::Tile(eType _land, sf::Vector2f _pos)
 {
-	col = _col;
-	row = _row;
 	land = _land;
-	cost = _cost;
+	cost = 1;
 	pos = _pos;
 	if (land == Water)
 		passable = false;
@@ -42,24 +38,20 @@ Tile::Tile(int _col, int _row, eType _land, int _cost, sf::Vector2f _pos)
 	{
 		// Handle error
 	}
-	mSpriteSheet.setPosition(pos);
 	mSpriteSheet.setTexture(mTexture);
 	mSpriteSheet.setTextureRect(sf::IntRect(0, 0, 140, 120));
+	mSpriteSheet.setPosition(pos);
 }
 Tile::~Tile(){}
 
-int Tile::getCol() const
-{
-	return col;
-}
-int Tile::getRow() const
-{
-	return row;
-}
-void Tile::setMoveCost(int _cost)
-{
-	cost = _cost;
-}
+//int Tile::getCol() const
+//{
+//	return col;
+//}
+//int Tile::getRow() const
+//{
+//	return row;
+//}
 int Tile::getMoveCost() const
 {
 	return cost;
@@ -68,7 +60,6 @@ bool Tile::isPassable() const
 {
 	return passable;
 }
-
 sf::Vector2f Tile::getPos() const
 {
 	return pos;
