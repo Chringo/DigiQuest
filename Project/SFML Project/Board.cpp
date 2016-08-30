@@ -2,7 +2,7 @@
 
 Board::Board()
 {
-	float strt = 680;
+	const float screenPos = 680;
 
 	// Set hexagon pattern
 	for (int x = 0; x < WIDTH; x++)
@@ -12,18 +12,18 @@ Board::Board()
 			if (x & 1) // Odd column
 			{
 				if (y == 0)
-					tiles[x][y] = new Tile(Tile::Start, sf::Vector2f((strt + 106.f * x), (90.f + 121.f * y)));
+					tiles[x][y] = new Tile(Tile::Start, sf::Vector2f((screenPos + 106.f * x), (90.f + 121.f * y)));
 				else if (y == (HEIGHT - 1))
-					tiles[x][y] = new Tile(Tile::Goal, sf::Vector2f((strt + 106.f * x), (90.f + 121.f * y)));
+					tiles[x][y] = new Tile(Tile::Goal, sf::Vector2f((screenPos + 106.f * x), (90.f + 121.f * y)));
 				else
-					tiles[x][y] = new Tile(Tile::Plain, sf::Vector2f((strt + 106.f * x), (90.f + 121.f * y)));
+					tiles[x][y] = new Tile(Tile::Plain, sf::Vector2f((screenPos + 106.f * x), (90.f + 121.f * y)));
 			}
 			else // Even column
 			{
 				if (y == 0)
 					tiles[x][y] = nullptr;
 				else
-					tiles[x][y] = new Tile(Tile::Plain, sf::Vector2f((strt + 106.f * x), (30.f + 121.f * y)));
+					tiles[x][y] = new Tile(Tile::Plain, sf::Vector2f((screenPos + 106.f * x), (30.f + 121.f * y)));
 			}
 		}
 	}
