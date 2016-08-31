@@ -6,41 +6,21 @@ Tile::Tile()
 	cost = -1;
 	passable = false;
 
-	pos = sf::Vector2f();
+	gPos = sf::Vector2f();
 }
-Tile::Tile(eType _land, sf::Vector2f _pos)
+Tile::Tile(eType _land, const sf::Texture* _tex, sf::Vector2f _pos)
 {
 	land = _land;
 	cost = 1;
-	pos = _pos;
+	gPos = _pos;
 	if (land == Water)
 		passable = false;
 	else
 		passable = true;
 
-	sf::String fileName;
-	switch (land)
-	{
-	case Plain:
-		fileName = "../Resources/plain.png";
-		break;
-	case Start:
-		fileName = "../Resources/start.png";
-		break;
-	case Goal:
-		fileName = "../Resources/goal.png";
-		break;
-	default:
-		fileName = "../Resources/goal.png";
-		break;
-	}
-	if (!mTexture.loadFromFile(fileName))
-	{
-		// Handle error
-	}
-	mSpriteSheet.setTexture(mTexture);
+	mSpriteSheet.setTexture(*_tex);
 	mSpriteSheet.setTextureRect(sf::IntRect(0, 0, 140, 120));
-	mSpriteSheet.setPosition(pos);
+	mSpriteSheet.setPosition(gPos);
 }
 Tile::~Tile(){}
 
@@ -60,9 +40,9 @@ bool Tile::isPassable() const
 {
 	return passable;
 }
-sf::Vector2f Tile::getPos() const
+sf::Vector2f Tile::getScreenPos() const
 {
-	return pos;
+	return gPos;
 }
 
 void Tile::draw(sf::RenderTarget &target, sf::RenderStates states) const

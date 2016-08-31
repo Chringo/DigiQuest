@@ -5,11 +5,14 @@
 #include <SFML\Graphics.hpp>
 #include "Tile.hpp"
 
+//const int BOARDWIDTH = 5;
+//const int BOARDHEIGHT = 5;
 class Board : public sf::Drawable
 {
 public:
 	Board();
 	virtual ~Board();
+	void loadBoard();
 
 	bool setActiveTile(int x, int y);
 	sf::Vector2f getActiveTilePos() const;
@@ -24,10 +27,9 @@ private:
 	Tile* active;
 	sf::Vector2f* adjoined;
 
-	// Hold one of each tile type
-	Tile startTile;
-	Tile goalTile;
-	Tile plainTile;
+	// Textureholder
+	sf::Texture mTileTextures[Tile::TILETYPECOUNT];
+	void loadTileTextures();
 
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };

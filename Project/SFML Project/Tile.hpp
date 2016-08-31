@@ -15,9 +15,10 @@ public:
 		Start,
 		Goal
 	};
+	static const int TILETYPECOUNT = 6;
 
 	Tile();
-	Tile(eType land, sf::Vector2f position);
+	Tile(eType land, const sf::Texture* texture, sf::Vector2f position);
 	virtual ~Tile();
 
 	//int getCol() const;
@@ -25,7 +26,7 @@ public:
 	int getMoveCost() const;
 	bool isPassable() const;
 
-	sf::Vector2f getPos() const;
+	sf::Vector2f getScreenPos() const;
 	//void Update(float dt); // For animation
 private:
 	//short int col;
@@ -34,7 +35,7 @@ private:
 	short int cost;
 	bool passable;
 
-	sf::Vector2f pos; // Graphical purpose
+	sf::Vector2f gPos; // Graphical purpose
 	
 	sf::Texture mTexture;
 	sf::Sprite mSpriteSheet;
