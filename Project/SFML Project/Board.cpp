@@ -14,7 +14,7 @@ Board::Board()
 	//active = nullptr;
 
 	// Import Tile textures
-	this->loadTileTextures();
+	this->importTileTextures();
 
 	this->loadBoard();
 	//this->printTileCost();
@@ -49,7 +49,7 @@ void Board::loadBoard()
 				else if (y == (HEIGHT - 1))
 					tiles[x][y] = new Tile(Tile::Goal, &mTileTextures[Tile::Goal], sf::Vector2f((screenPos + 106.f * x), (90.f + 121.f * y)));
 				else
-					tiles[x][y] = new Tile(Tile::Plain, &mTileTextures[Tile::Plain], sf::Vector2f((screenPos + 106.f * x), (90.f + 121.f * y)));
+					tiles[x][y] = new Tile(Tile::Water, &mTileTextures[Tile::Water], sf::Vector2f((screenPos + 106.f * x), (90.f + 121.f * y)));
 			}
 			else // Even column
 			{
@@ -108,45 +108,29 @@ void Board::Update(float dt)
 	
 }
 
-void Board::loadTileTextures()
+void Board::loadTileTexture(unsigned int tile, const sf::String &file)
+{
+	if (!mTileTextures[tile].loadFromFile(file))
+	{
+		// Handle error
+		mTileTextures[tile].create(140, 120);
+	}
+}
+void Board::importTileTextures()
 {
 	sf::String fileName;
 	fileName = "../Resources/plain.png";
-	if (!mTileTextures[Tile::Plain].loadFromFile(fileName))
-	{
-		// Handle error
-		mTileTextures[Tile::Plain].create(140.f, 120.f);
-	}
-	fileName = "../Resources/plain.png";
-	if (!mTileTextures[Tile::Hill].loadFromFile(fileName))
-	{
-		// Handle error
-		mTileTextures[Tile::Hill].create(140.f, 120.f);
-	}
-	fileName = "../Resources/plain.png";
-	if (!mTileTextures[Tile::Forest].loadFromFile(fileName))
-	{
-		// Handle error
-		mTileTextures[Tile::Forest].create(140.f, 120.f);
-	}
-	fileName = "../Resources/plain.png";
-	if (!mTileTextures[Tile::Water].loadFromFile(fileName))
-	{
-		// Handle error
-		mTileTextures[Tile::Water].create(140.f, 120.f);
-	}
+	this->loadTileTexture(Tile::Plain, fileName);
+	fileName = "../Resources/hill.png";
+	this->loadTileTexture(Tile::Hill, fileName);
+	fileName = "../Resources/forest.png";
+	this->loadTileTexture(Tile::Forest, fileName);
+	fileName = "../Resources/water.png";
+	this->loadTileTexture(Tile::Water, fileName);
 	fileName = "../Resources/start.png";
-	if (!mTileTextures[Tile::Start].loadFromFile(fileName))
-	{
-		// Handle error
-		mTileTextures[Tile::Start].create(140.f, 120.f);
-	}
+	this->loadTileTexture(Tile::Start, fileName);
 	fileName = "../Resources/goal.png";
-	if (!mTileTextures[Tile::Goal].loadFromFile(fileName))
-	{
-		// Handle error
-		mTileTextures[Tile::Goal].create(140.f, 120.f);
-	}
+	this->loadTileTexture(Tile::Goal, fileName);
 }
 
 void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const

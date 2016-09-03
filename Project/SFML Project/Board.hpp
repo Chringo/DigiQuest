@@ -29,7 +29,10 @@ private:
 
 	// Textureholder
 	sf::Texture mTileTextures[Tile::TILETYPECOUNT];
-	void loadTileTextures();
+	// Import tiles from file system
+	void importTileTextures();
+	// Tries to load tile to array
+	void loadTileTexture(unsigned int tile, const sf::String &file);	
 
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };
