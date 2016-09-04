@@ -1,17 +1,16 @@
 #ifndef BOARD_HPP
 #define BOARD_HPP
-
 #include <iostream>
 #include <SFML\Graphics.hpp>
 #include "Tile.hpp"
-
-//const int BOARDWIDTH = 5;
-//const int BOARDHEIGHT = 5;
+/**
+*	This object handles all things related to Tiles
+*/
 class Board : public sf::Drawable
 {
 public:
 	Board();
-	virtual ~Board();
+	~Board();
 	void loadBoard();
 
 	bool setActiveTile(int x, int y);

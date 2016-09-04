@@ -1,8 +1,11 @@
 #include "Board.hpp"
-
+/**
+*	Create board with all the information needed before game
+*/
 Board::Board()
 {
-	// "Initiate" Tiles
+	// TODO: Initiate Tiles with default constructor.
+	// Remove "new" argument in Board::loadBoard()
 	for (int x = 0; x < WIDTH; x++)
 	{
 		for (int y = 0; y < HEIGHT; y++)
@@ -17,8 +20,11 @@ Board::Board()
 	this->importTileTextures();
 
 	this->loadBoard();
-	//this->printTileCost();
+	this->printTileCost();
 }
+/**
+*	Destructor, makes sure tiles are deallocated
+*/
 Board::~Board()
 {
 	for (int x = 0; x < WIDTH; x++)
@@ -33,6 +39,12 @@ Board::~Board()
 		delete[] adjoined;
 
 }
+/**
+*	Load board with tiles and actually create a map.
+*	TODO: This function should fill pre-created tiles with data needed for the game.
+*	TODO: Map settings, hardcoded or not the map needs to be interesting.
+*	Future: Import map-data from file system
+*/
 void Board::loadBoard()
 {
 	const float screenPos = 680;
@@ -60,11 +72,6 @@ void Board::loadBoard()
 			}
 		}
 	}
-
-	//// Set Player Start Position
-	//active = tiles[1][0];
-
-	//adjoined = new sf::Vector2f[3];
 }
 
 bool Board::setActiveTile(int x, int y)
@@ -103,19 +110,29 @@ sf::Vector2f* Board::getAdjoinedTiles()
 	//printf("%.f, %.f \n", adjoined[2].x, adjoined[2].y);
 	return adjoined;
 }
+/**
+*	Update
+*/
 void Board::Update(float dt)
 {
-	
+	// TODO/Future: Animation of tiles and board
+	// TODO/Future: Update sound environment
 }
-
+/**
+*	Helper function for import of tile textures
+*/
 void Board::loadTileTexture(unsigned int tile, const sf::String &file)
 {
 	if (!mTileTextures[tile].loadFromFile(file))
 	{
 		// Handle error
 		mTileTextures[tile].create(140, 120);
+		// TODO: Send log to user(programmer)
 	}
 }
+/**
+*	Imports tile textures from file system
+*/
 void Board::importTileTextures()
 {
 	sf::String fileName;
@@ -132,10 +149,11 @@ void Board::importTileTextures()
 	fileName = "../Resources/goal.png";
 	this->loadTileTexture(Tile::Goal, fileName);
 }
-
+/**
+*	Rendering
+*/
 void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-	// Draw board of tiles
 	for (int x = 0; x < WIDTH; x++)
 	{
 		for (int y = 0; y < HEIGHT; y++)
@@ -145,18 +163,21 @@ void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
 		}
 	}
 }
-
+/**
+*	For debug purposes, prints tile costs to console
+*/
 void Board::printTileCost()
 {
-	for (int x = 0; x < WIDTH; x++)
+	for (int y = 0; y < HEIGHT; y++)
 	{
-		for (int y = 0; y < HEIGHT; y++)
+		for (int x = 0; x < WIDTH; x++)
 		{
+			std::cout << x << y << ": ";
 			if (tiles[x][y] != nullptr)
-				printf("%d ", tiles[x][y]->getMoveCost());
+				std::cout << tiles[x][y]->getMoveCost() << " ";
 			else
-				printf("  ");
+				std::cout << "  ";
 		}
-		printf("\n");
+		std::cout << std::endl;
 	}
 }
