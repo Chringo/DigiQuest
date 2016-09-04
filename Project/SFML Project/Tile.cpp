@@ -2,50 +2,55 @@
 
 Tile::Tile()
 {
-	land = Plain;
-	cost = -1;
-	passable = false;
-
-	gPos = sf::Vector2f();
+	m_Land = Goal;
+	m_Cost = -1;
+	m_Passable = false;
 }
-Tile::Tile(eType _land, const sf::Texture* _tex, sf::Vector2f _pos)
-{
-	land = _land;
-	cost = 1;
-	gPos = _pos;
-	if (land == Water)
-		passable = false;
-	else
-		passable = true;
 
-	mSpriteSheet.setTexture(*_tex);
-	mSpriteSheet.setTextureRect(sf::IntRect(0, 0, 140, 120));
-	mSpriteSheet.setPosition(gPos);
+Tile::Tile(eType land, const sf::Texture* tex, sf::Vector2f pos)
+{
+	m_Land = land;
+	if (m_Land == Plain || m_Land == Start || m_Land == Goal)
+	{
+		m_Cost = 1;
+		m_Passable = true;
+	}
+	else if (m_Land == Hill)
+	{
+		m_Cost = 3;
+		m_Passable = true;
+	}
+	else if (m_Land == Forest)
+	{
+		m_Cost = 2;
+		m_Passable = true;
+	}
+	else if (m_Land == Water)
+	{
+		m_Cost = 0;
+		m_Passable = false;
+	}
+
+	m_SpriteSheet.setTexture(*tex);
+	m_SpriteSheet.setTextureRect(sf::IntRect(0, 0, 140, 120));
+	m_SpriteSheet.setPosition(pos);
 }
 Tile::~Tile(){}
 
-//int Tile::getCol() const
-//{
-//	return col;
-//}
-//int Tile::getRow() const
-//{
-//	return row;
-//}
 int Tile::getMoveCost() const
 {
-	return cost;
+	return m_Cost;
 }
 bool Tile::isPassable() const
 {
-	return passable;
+	return m_Passable;
 }
 sf::Vector2f Tile::getScreenPos() const
 {
-	return gPos;
+	return m_SpriteSheet.getPosition();
 }
 
 void Tile::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-	target.draw(mSpriteSheet, states);
+	target.draw(m_SpriteSheet, states);
 }

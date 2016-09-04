@@ -1,6 +1,5 @@
 #ifndef TILE_HPP
 #define TILE_HPP
-
 #include <SFML\Graphics.hpp>
 
 class Tile : public sf::Drawable
@@ -19,26 +18,19 @@ public:
 
 	Tile();
 	Tile(eType land, const sf::Texture* texture, sf::Vector2f position);
-	virtual ~Tile();
+	~Tile();
 
-	//int getCol() const;
-	//int getRow() const;
 	int getMoveCost() const;
 	bool isPassable() const;
 
 	sf::Vector2f getScreenPos() const;
-	//void Update(float dt); // For animation
 private:
-	//short int col;
-	//short int row;
-	eType land;
-	short int cost;
-	bool passable;
-
-	sf::Vector2f gPos; // Graphical purpose
+	eType m_Land;
+	short int m_Cost;
+	bool m_Passable;
 	
-	sf::Texture mTexture;
-	sf::Sprite mSpriteSheet;
+	sf::Texture m_Texture;
+	sf::Sprite m_SpriteSheet;
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };
 #endif
