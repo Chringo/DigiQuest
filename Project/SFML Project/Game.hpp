@@ -19,12 +19,12 @@ public:
 private:
 	enum State : unsigned int
 	{
-		START = 0,
+		MENU = 0,
 		GAME,
-		GOAL,
-		GAMEOVER
+		WON,
+		LOST
 	};
-	int currentstate;
+	int m_state;
 
 	bool was_A;
 	bool was_S;
@@ -40,10 +40,10 @@ private:
 
 	bool combat(Player* player, Enemy* aEnemy);
 
-	sf::Texture mBackgroundTex;
-	sf::Sprite mBackgroundSprite;
-	sf::Texture mInfosTex;
-	sf::Sprite mInfoSprite;
+	sf::Texture m_BackgroundTex;
+	sf::Sprite m_BackgroundSprite;
+	sf::Texture m_InfosTex;
+	sf::Sprite m_InfoSprite;
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };
 #endif

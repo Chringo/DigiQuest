@@ -3,13 +3,13 @@
 Game::Game()
 {
 	// Background
-	if (!mBackgroundTex.loadFromFile("../Resources/bgd_wood.png"))
+	if (!m_BackgroundTex.loadFromFile("../Resources/bgd_wood.png"))
 	{
 		// Handle error
 	}
-	mBackgroundSprite.setTexture(mBackgroundTex);
+	m_BackgroundSprite.setTexture(m_BackgroundTex);
 
-	currentstate = State::START;
+	m_state = State::MENU;
 	board = new Board();
 	player = nullptr;
 	was_A = false;
@@ -110,7 +110,7 @@ bool Game::combat(Player* player, Enemy* aEnemy)
 
 void Game::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-	target.draw(mBackgroundSprite, states);
+	target.draw(m_BackgroundSprite, states);
 	target.draw(*board, states);
 	if (player != nullptr)
 		target.draw(*player, states);
